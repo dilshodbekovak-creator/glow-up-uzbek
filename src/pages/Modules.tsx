@@ -1,70 +1,64 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Play } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import moduleBody from "@/assets/module-body.png";
-import moduleCycle from "@/assets/module-cycle.png";
-import moduleWellness from "@/assets/module-wellness.png";
-import moduleMental from "@/assets/module-mental.png";
+import { ArrowLeft, Play, Lock } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
-const modules = [
-  {
-    title: "Tana haqida bilim",
-    image: moduleBody,
-    color: "bg-glow-peach",
-    lessons: [
-      "Tanangizni tushunish",
-      "O'sish davrlari",
-      "Ovqatlanish va salomatlik",
-      "Uyqu va dam olish",
-      "Jismoniy faollik",
-      "Gigiyena asoslari",
-      "Teri va soch parvarishi",
-      "Tana o'zgarishlari",
-    ],
-  },
-  {
-    title: "Hayz sikli",
-    image: moduleCycle,
-    color: "bg-glow-rose",
-    lessons: [
-      "Hayz nima?",
-      "Sikl bosqichlari",
-      "Gigienik vositalar",
-      "Og'riq bilan kurashish",
-      "Noma'lum belgilar",
-      "Shifokorga murojaat",
-    ],
-  },
-  {
-    title: "Tibbiy salomatlik",
-    image: moduleWellness,
-    color: "bg-glow-mint",
-    lessons: [
-      "Profilaktik tekshiruvlar",
-      "Emlash haqida",
-      "Oziq-ovqat xavfsizligi",
-      "Allergiya va immunitet",
-      "Dori-darmonlar haqida",
-    ],
-  },
-  {
-    title: "Ruhiy salomatlik",
-    image: moduleMental,
-    color: "bg-glow-lavender",
-    lessons: [
-      "Hissiyotlarni boshqarish",
-      "Stress bilan ishlash",
-      "O'z-o'ziga ishonch",
-      "Sog'lom munosabatlar",
-      "Yordam so'rash",
-      "Meditatsiya asoslari",
-      "Ijobiy fikrlash",
-    ],
-  },
-];
-
-const Modules = () => {
+const ModuleDetail = () => {
   const navigate = useNavigate();
+  const { moduleId } = useParams();
+  const { profile } = useAuth();
+
+  const { data: module } = useQuery({
+    queryKey: ["module", moduleId],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("modules")
+        .select("*")
+        .eq("id", moduleId!)
+        .single();
+      return data;
+    },
+    enabled: !!moduleId,
+  });
+
+  const { data: lessons } = useQuery({
+    queryKey: ["lessons", moduleId],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("lessons")
+        .select("*")
+        .eq("module_id", moduleId!)
+        .order("sort_order");
+      return data ?? [];
+    },
+    enabled: !!moduleId,
+  });
+
+  const { data: completedLessons } = useQuery({
+    queryKey: ["completed-lessons", moduleId],
+    queryFn: async () => {
+      const lessonIds = lessons?.map((l) => l.id) ?? [];
+      if (lessonIds.length === 0) return [];
+      const { data } = await supabase
+        .from("completed_lessons")
+        .select("lesson_id")
+        .in("lesson_id", lessonIds);
+      return data?.map((c) => c.lesson_id) ?? [];
+    },
+    enabled: !!lessons && lessons.length > 0,
+  });
+
+  const completedCount = completedLessons?.length ?? 0;
+  const totalCount = lessons?.length ?? 0;
+  const progress = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
+  const handleBuy = () => {
+    const moduleName = module?.title ?? "modul";
+    const msg = encodeURIComponent(`Salom! Men ${moduleName} darsligini sotib olmoqchiman.`);
+    window.open(`https://t.me/your_admin_username?text=${msg}`, "_blank");
+  };
 
   return (
     <div className="min-h-screen pb-24 bg-background">
@@ -72,44 +66,83 @@ const Modules = () => {
         <button onClick={() => navigate("/")} className="text-foreground">
           <ArrowLeft size={22} />
         </button>
-        <h1 className="text-xl font-extrabold text-foreground">O'quv modullari</h1>
+        <h1 className="text-xl font-extrabold text-foreground">
+          {module?.emoji} {module?.title}
+        </h1>
       </div>
 
-      <div className="px-5 space-y-6">
-        {modules.map((mod, mi) => (
-          <motion.div
-            key={mod.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: mi * 0.1 }}
+      <div className="px-5">
+        {/* Progress */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-card rounded-2xl p-4 shadow-card mb-4"
+        >
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-bold text-foreground">Taraqqiyot</span>
+            <span className="text-xs text-muted-foreground">
+              {completedCount}/{totalCount} dars
+            </span>
+          </div>
+          <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+            <div
+              className="h-full rounded-full gradient-warm transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </motion.div>
+
+        {/* Buy button for non-premium */}
+        {!profile?.is_premium && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={handleBuy}
+            className="w-full mb-4 py-3 rounded-xl gradient-warm text-primary-foreground font-bold text-sm shadow-soft"
           >
-            <div className={`rounded-2xl p-4 ${mod.color}`}>
-              <div className="flex items-center gap-3 mb-3">
-                <img src={mod.image} alt={mod.title} className="w-10 h-10 object-contain" />
-                <h2 className="font-bold text-foreground">{mod.title}</h2>
-              </div>
-              <div className="space-y-2">
-                {mod.lessons.map((lesson, li) => (
-                  <div
-                    key={li}
-                    className="flex items-center gap-3 bg-card/70 rounded-xl px-3 py-2.5 cursor-pointer hover:bg-card transition-colors"
-                  >
-                    <div className="w-7 h-7 rounded-full gradient-warm flex items-center justify-center flex-shrink-0">
-                      <Play size={12} className="text-primary-foreground ml-0.5" />
-                    </div>
-                    <span className="text-sm font-medium text-foreground">{lesson}</span>
-                    <span className="ml-auto text-[10px] text-muted-foreground">
-                      {li + 1}/{mod.lessons.length}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ))}
+            🔒 Sotib olish — {module?.price?.toLocaleString()} so'm
+          </motion.button>
+        )}
+
+        {/* Lessons */}
+        <div className="space-y-2">
+          {lessons?.map((lesson, li) => {
+            const isCompleted = completedLessons?.includes(lesson.id);
+            return (
+              <motion.div
+                key={lesson.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: li * 0.05 }}
+                onClick={() => navigate(`/lesson/${lesson.id}`)}
+                className="flex items-center gap-3 bg-card rounded-xl px-4 py-3 cursor-pointer hover:shadow-soft transition-shadow shadow-card"
+              >
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    isCompleted ? "bg-green-100" : "gradient-warm"
+                  }`}
+                >
+                  {isCompleted ? (
+                    <span className="text-green-600 text-xs font-bold">✓</span>
+                  ) : !profile?.is_premium ? (
+                    <Lock size={12} className="text-primary-foreground" />
+                  ) : (
+                    <Play size={12} className="text-primary-foreground ml-0.5" />
+                  )}
+                </div>
+                <span className="text-sm font-medium text-foreground flex-1">
+                  {lesson.title}
+                </span>
+                <span className="text-[10px] text-muted-foreground">
+                  {li + 1}/{totalCount}
+                </span>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 };
 
-export default Modules;
+export default ModuleDetail;
