@@ -119,11 +119,11 @@ const ModuleDetail = () => {
               >
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    isCompleted ? "bg-green-100" : "gradient-warm"
+                    isCompleted ? "bg-glow-mint" : "gradient-warm"
                   }`}
                 >
                   {isCompleted ? (
-                    <span className="text-green-600 text-xs font-bold">✓</span>
+                    <span className="text-foreground text-xs font-bold">✓</span>
                   ) : !profile?.is_premium ? (
                     <Lock size={12} className="text-primary-foreground" />
                   ) : (

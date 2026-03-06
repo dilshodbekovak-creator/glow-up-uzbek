@@ -133,7 +133,7 @@ const Lesson = () => {
 
         {/* Complete button */}
         {isCompleted ? (
-          <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-green-50 text-green-600">
+          <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-glow-mint text-foreground">
             <CheckCircle size={18} />
             <span className="font-bold text-sm">Tugatilgan ✓</span>
           </div>
