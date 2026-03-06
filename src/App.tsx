@@ -2,15 +2,55 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import Index from "./pages/Index";
-import Modules from "./pages/Modules";
+import ModulesList from "./pages/ModulesList";
+import ModuleDetail from "./pages/Modules";
+import Lesson from "./pages/Lesson";
 import Tracker from "./pages/Tracker";
 import Profile from "./pages/Profile";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
 
 const queryClient = new QueryClient();
+
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="min-h-screen flex items-center justify-center gradient-soft"><span className="text-2xl">🌸</span></div>;
+  if (!user) return <Navigate to="/auth" replace />;
+  return <>{children}</>;
+};
+
+const AuthRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (user) return <Navigate to="/" replace />;
+  return <>{children}</>;
+};
+
+const AppRoutes = () => (
+  <div className="max-w-lg mx-auto relative">
+    <Routes>
+      <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
+      <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+      <Route path="/modules" element={<ProtectedRoute><ModulesList /></ProtectedRoute>} />
+      <Route path="/modules/:moduleId" element={<ProtectedRoute><ModuleDetail /></ProtectedRoute>} />
+      <Route path="/lesson/:lessonId" element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
+      <Route path="/tracker" element={<ProtectedRoute><Tracker /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+    <ProtectedBottomNav />
+  </div>
+);
+
+const ProtectedBottomNav = () => {
+  const { user } = useAuth();
+  if (!user) return null;
+  return <BottomNav />;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -18,16 +58,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="max-w-lg mx-auto relative">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/modules" element={<Modules />} />
-            <Route path="/tracker" element={<Tracker />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <BottomNav />
-        </div>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
