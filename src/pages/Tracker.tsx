@@ -34,6 +34,8 @@ const Tracker = () => {
   const [selectedStart, setSelectedStart] = useState<Date | null>(null);
   const [cycleLength, setCycleLength] = useState(28);
 
+  usePeriodNotification();
+
   const { data: periods } = useQuery({
     queryKey: ["periods"],
     queryFn: async () => {
