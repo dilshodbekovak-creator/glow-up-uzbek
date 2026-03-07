@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ChevronLeft, ChevronRight, Trash2, Minus, Plus } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Trash2, Minus, Plus, Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { usePeriodNotification } from "@/hooks/usePeriodNotification";
 import {
   format,
   startOfMonth,
