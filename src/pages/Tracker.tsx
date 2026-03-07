@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ChevronLeft, ChevronRight, Trash2, Minus, Plus } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Trash2, Minus, Plus, Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { usePeriodNotification } from "@/hooks/usePeriodNotification";
 import {
   format,
   startOfMonth,
@@ -32,6 +33,8 @@ const Tracker = () => {
   const [tapState, setTapState] = useState<"idle" | "start_selected">("idle");
   const [selectedStart, setSelectedStart] = useState<Date | null>(null);
   const [cycleLength, setCycleLength] = useState(28);
+
+  usePeriodNotification();
 
   const { data: periods } = useQuery({
     queryKey: ["periods"],
@@ -137,6 +140,21 @@ const Tracker = () => {
           <ArrowLeft size={22} />
         </button>
         <h1 className="text-xl font-extrabold text-foreground">Hayz kalendari</h1>
+        <button
+          onClick={() => {
+            if ("Notification" in window) {
+              Notification.requestPermission().then((perm) => {
+                if (perm === "granted") toast.success("Bildirishnomalar yoqildi! 🔔");
+                else toast.error("Bildirishnomalar rad etildi");
+              });
+            } else {
+              toast.error("Brauzer bildirishnomalarni qo'llab-quvvatlamaydi");
+            }
+          }}
+          className="ml-auto w-9 h-9 rounded-full bg-muted flex items-center justify-center"
+        >
+          <Bell size={16} className="text-foreground" />
+        </button>
       </div>
 
       <div className="px-5">
