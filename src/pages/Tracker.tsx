@@ -121,7 +121,6 @@ const Tracker = () => {
     ? differenceInDays(parseISO(latestPeriod.predicted_next_date), new Date())
     : null;
 
-  // Calculate current cycle day
   const currentCycleDay = latestPeriod
     ? differenceInDays(new Date(), parseISO(latestPeriod.start_date)) + 1
     : null;
@@ -134,12 +133,19 @@ const Tracker = () => {
   const offset = startDay === 0 ? 6 : startDay - 1;
 
   return (
-    <div className="min-h-screen pb-24 bg-background">
-      <div className="px-5 pt-12 pb-4 flex items-center gap-3">
-        <button onClick={() => navigate("/")} className="text-foreground">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="min-h-screen pb-24 bg-background"
+    >
+      <div className="px-5 pt-12 pb-2 flex items-center gap-3">
+        <button onClick={() => navigate("/")} className="text-foreground" style={{ minHeight: 44, minWidth: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>
           <ArrowLeft size={22} />
         </button>
-        <h1 className="text-xl font-extrabold text-foreground">Hayz kalendari</h1>
+        <div className="flex-1">
+          <h1 className="text-lg font-semibold text-foreground">Porla Kalendari</h1>
+          <p className="text-[10px] text-muted-foreground">Siklni kuzatib boring</p>
+        </div>
         <button
           onClick={() => {
             if ("Notification" in window) {
@@ -151,38 +157,39 @@ const Tracker = () => {
               toast.error("Brauzer bildirishnomalarni qo'llab-quvvatlamaydi");
             }
           }}
-          className="ml-auto w-9 h-9 rounded-full bg-muted flex items-center justify-center"
+          className="w-11 h-11 rounded-full bg-muted flex items-center justify-center"
+          title="Eslatmalarni sozlash"
         >
-          <Bell size={16} className="text-foreground" />
+          <Bell size={18} className="text-foreground" />
         </button>
       </div>
 
       <div className="px-5">
-        {/* Stats cards */}
+        {/* Stats cards — always show both */}
         <div className="grid grid-cols-2 gap-3 mb-4">
-          {daysUntilNext !== null && daysUntilNext > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-glow-rose rounded-2xl p-4 text-center"
-            >
-              <p className="text-[10px] text-muted-foreground font-medium mb-1">Keyingi hayzgacha</p>
-              <p className="text-2xl font-extrabold text-primary">{daysUntilNext}</p>
-              <p className="text-[10px] text-muted-foreground">kun</p>
-            </motion.div>
-          )}
-          {isInCycleRange && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 }}
-              className="bg-card rounded-2xl p-4 text-center shadow-card"
-            >
-              <p className="text-[10px] text-muted-foreground font-medium mb-1">Sikl kuni</p>
-              <p className="text-2xl font-extrabold text-foreground">{currentCycleDay}</p>
-              <p className="text-[10px] text-muted-foreground">{cycleLength} kunlik sikldan</p>
-            </motion.div>
-          )}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-porla-petal rounded-2xl p-4 text-center shadow-card"
+          >
+            <p className="text-[10px] text-muted-foreground font-medium mb-1">Keyingi hayzgacha</p>
+            <p className="text-2xl font-bold text-primary">
+              {daysUntilNext !== null && daysUntilNext > 0 ? daysUntilNext : "—"}
+            </p>
+            <p className="text-[10px] text-muted-foreground">kun</p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="bg-card rounded-2xl p-4 text-center shadow-card"
+          >
+            <p className="text-[10px] text-muted-foreground font-medium mb-1">Sikl kuni</p>
+            <p className="text-2xl font-bold text-foreground">
+              {isInCycleRange ? currentCycleDay : "—"}
+            </p>
+            <p className="text-[10px] text-muted-foreground">{cycleLength} kunlik sikldan</p>
+          </motion.div>
         </div>
 
         {/* Cycle length selector */}
@@ -192,20 +199,20 @@ const Tracker = () => {
           className="bg-card rounded-2xl p-4 mb-4 shadow-card"
         >
           <div className="flex items-center justify-between">
-            <p className="text-sm font-bold text-foreground">Sikl uzunligi</p>
+            <p className="text-sm font-semibold text-foreground">Sikl uzunligi</p>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setCycleLength(Math.max(28, cycleLength - 1))}
-                className="w-8 h-8 rounded-full bg-muted flex items-center justify-center"
+                className="w-11 h-11 rounded-full border-[1.5px] border-primary flex items-center justify-center press-scale"
               >
-                <Minus size={14} className="text-foreground" />
+                <Minus size={16} className="text-primary" />
               </button>
-              <span className="text-lg font-extrabold text-primary w-8 text-center">{cycleLength}</span>
+              <span className="text-lg font-bold text-primary w-8 text-center">{cycleLength}</span>
               <button
                 onClick={() => setCycleLength(Math.min(35, cycleLength + 1))}
-                className="w-8 h-8 rounded-full bg-muted flex items-center justify-center"
+                className="w-11 h-11 rounded-full border-[1.5px] border-primary flex items-center justify-center press-scale"
               >
-                <Plus size={14} className="text-foreground" />
+                <Plus size={16} className="text-primary" />
               </button>
             </div>
           </div>
@@ -213,16 +220,34 @@ const Tracker = () => {
         </motion.div>
 
         {/* Tap instruction */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mb-3 text-center"
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-3 text-center">
           <p className="text-xs text-muted-foreground font-medium">
             {tapState === "idle"
               ? "Hayz boshlanish kunini tanlang"
               : "Endi tugash kunini tanlang"}
           </p>
+        </motion.div>
+
+        {/* Legend — above calendar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-3"
+        >
+          <div className="flex items-center justify-center gap-5 text-xs">
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded-full bg-destructive" />
+              <span className="text-muted-foreground">Hayz</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded-full bg-porla-blush" />
+              <span className="text-muted-foreground">Taxminiy</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded-full ring-2 ring-primary bg-transparent" />
+              <span className="text-muted-foreground">Bugun</span>
+            </div>
+          </div>
         </motion.div>
 
         {/* Calendar */}
@@ -232,20 +257,20 @@ const Tracker = () => {
           className="bg-card rounded-2xl p-5 shadow-card"
         >
           <div className="flex items-center justify-between mb-4">
-            <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
+            <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} style={{ minHeight: 44, minWidth: 44 }} className="flex items-center justify-center">
               <ChevronLeft size={20} className="text-muted-foreground" />
             </button>
-            <h2 className="font-bold text-foreground">
+            <h2 className="font-semibold text-foreground">
               {format(currentMonth, "MMMM yyyy")}
             </h2>
-            <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
+            <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} style={{ minHeight: 44, minWidth: 44 }} className="flex items-center justify-center">
               <ChevronRight size={20} className="text-muted-foreground" />
             </button>
           </div>
 
           <div className="grid grid-cols-7 gap-1 mb-2">
             {weekDays.map((d) => (
-              <div key={d} className="text-center text-[10px] font-bold text-muted-foreground">
+              <div key={d} className="text-center text-[10px] font-semibold text-muted-foreground">
                 {d}
               </div>
             ))}
@@ -266,11 +291,11 @@ const Tracker = () => {
                   key={day.toISOString()}
                   onClick={() => handleDayTap(day)}
                   className={`aspect-square rounded-xl flex items-center justify-center text-sm font-semibold transition-all
-                    ${inPeriod ? "bg-primary text-primary-foreground shadow-soft" : ""}
-                    ${predicted && !inPeriod ? "bg-glow-rose text-foreground" : ""}
+                    ${inPeriod ? "bg-destructive text-destructive-foreground shadow-soft" : ""}
+                    ${predicted && !inPeriod ? "bg-porla-blush text-foreground" : ""}
                     ${isStart ? "ring-2 ring-primary" : ""}
-                    ${today && !inPeriod && !predicted ? "ring-2 ring-foreground/30" : ""}
-                    ${!inPeriod && !predicted ? "text-foreground hover:bg-muted" : ""}
+                    ${today && !inPeriod && !predicted ? "ring-2 ring-primary bg-transparent" : ""}
+                    ${!inPeriod && !predicted && !today ? "text-foreground hover:bg-muted" : ""}
                   `}
                 >
                   {format(day, "d")}
@@ -280,42 +305,19 @@ const Tracker = () => {
           </div>
         </motion.div>
 
-        {/* Legend */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mt-4 bg-card rounded-2xl p-4 shadow-card"
-        >
-          <div className="flex items-center gap-4 text-xs">
-            <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-full gradient-warm" />
-              <span className="text-muted-foreground">Hayz kunlari</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-glow-rose" />
-              <span className="text-muted-foreground">Taxminiy kunlar</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-full ring-2 ring-foreground/30" />
-              <span className="text-muted-foreground">Bugun</span>
-            </div>
-          </div>
-        </motion.div>
-
         {tapState === "start_selected" && (
           <button
             onClick={() => {
               setTapState("idle");
               setSelectedStart(null);
             }}
-            className="w-full mt-3 py-2 rounded-xl bg-muted text-muted-foreground text-sm font-medium"
+            className="w-full mt-3 h-11 rounded-[14px] bg-muted text-muted-foreground text-sm font-medium press-scale"
           >
             Bekor qilish
           </button>
         )}
 
-        {/* Saved periods list with delete */}
+        {/* Saved periods */}
         {periods && periods.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -323,7 +325,7 @@ const Tracker = () => {
             transition={{ delay: 0.3 }}
             className="mt-4 bg-card rounded-2xl p-4 shadow-card"
           >
-            <h3 className="text-sm font-bold text-foreground mb-3">Saqlangan davrlar</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-3">Saqlangan davrlar</h3>
             <div className="space-y-2">
               <AnimatePresence>
                 {periods.map((p) => (
@@ -332,10 +334,11 @@ const Tracker = () => {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 10 }}
-                    className="flex items-center justify-between bg-muted rounded-xl px-3 py-2.5"
+                    className="flex items-center justify-between bg-muted rounded-xl px-4"
+                    style={{ minHeight: 48 }}
                   >
                     <div>
-                      <p className="text-sm font-semibold text-foreground">
+                      <p className="text-sm font-medium text-foreground">
                         {format(parseISO(p.start_date), "dd.MM.yyyy")}
                         {p.end_date && ` — ${format(parseISO(p.end_date), "dd.MM.yyyy")}`}
                       </p>
@@ -347,7 +350,7 @@ const Tracker = () => {
                     </div>
                     <button
                       onClick={() => deleteMutation.mutate(p.id)}
-                      className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center"
+                      className="w-10 h-10 rounded-[10px] bg-destructive/10 flex items-center justify-center"
                     >
                       <Trash2 size={14} className="text-destructive" />
                     </button>
@@ -358,7 +361,7 @@ const Tracker = () => {
           </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

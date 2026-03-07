@@ -6,6 +6,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
+const renamedTitles: Record<string, string> = {
+  "Hayz Sikli Ilmi": "Sikl va tanani anglash",
+  "Sog'liq va Gigiyena": "Sog'lom turmush asoslari",
+  "Psixologiya": "Ichki dunyo va ruhiyat",
+};
+
 const Lesson = () => {
   const navigate = useNavigate();
   const { lessonId } = useParams();
@@ -58,24 +64,31 @@ const Lesson = () => {
   });
 
   const handleBuy = () => {
-    const moduleName = (lesson as any)?.modules?.title ?? "modul";
-    const msg = encodeURIComponent(`Salom! Men ${moduleName} darsligini sotib olmoqchiman.`);
+    const moduleTitle = (lesson as any)?.modules?.title ?? "modul";
+    const displayTitle = renamedTitles[moduleTitle] || moduleTitle;
+    const msg = encodeURIComponent(`Salom! Men "${displayTitle}" kursiga yozilmoqchiman.`);
     window.open(`https://t.me/your_admin_username?text=${msg}`, "_blank");
   };
 
   const isPremium = profile?.is_premium ?? false;
+  const moduleTitle = (lesson as any)?.modules?.title ?? "";
+  const displayModuleTitle = renamedTitles[moduleTitle] || moduleTitle;
 
   return (
-    <div className="min-h-screen pb-24 bg-background">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="min-h-screen pb-24 bg-background"
+    >
       <div className="px-5 pt-12 pb-4 flex items-center gap-3">
-        <button onClick={() => navigate(-1)} className="text-foreground">
+        <button onClick={() => navigate(-1)} className="text-foreground" style={{ minHeight: 44, minWidth: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>
           <ArrowLeft size={22} />
         </button>
         <div>
           <p className="text-[10px] text-muted-foreground">
-            {(lesson as any)?.modules?.emoji} {(lesson as any)?.modules?.title}
+            {(lesson as any)?.modules?.emoji} {displayModuleTitle}
           </p>
-          <h1 className="text-lg font-extrabold text-foreground">{lesson?.title}</h1>
+          <h1 className="text-lg font-semibold text-foreground leading-tight">{lesson?.title}</h1>
         </div>
       </div>
 
@@ -106,13 +119,13 @@ const Lesson = () => {
             <div className="aspect-video bg-muted flex flex-col items-center justify-center gap-3">
               <Lock size={40} className="text-muted-foreground" />
               <p className="text-sm text-muted-foreground font-medium">
-                Video faqat Premium foydalanuvchilar uchun
+                Video faqat Pro foydalanuvchilar uchun
               </p>
               <button
                 onClick={handleBuy}
-                className="px-5 py-2 rounded-xl gradient-warm text-primary-foreground font-bold text-sm shadow-soft"
+                className="h-10 px-5 rounded-[14px] gradient-warm text-primary-foreground font-semibold text-sm shadow-soft press-scale inline-flex items-center gap-1.5"
               >
-                🔒 Sotib olish
+                🔒 Kursga yozilish
               </button>
             </div>
           )}
@@ -125,7 +138,7 @@ const Lesson = () => {
           transition={{ delay: 0.1 }}
           className="bg-card rounded-2xl p-5 shadow-card mb-4"
         >
-          <h2 className="font-bold text-foreground mb-3">Dars matni</h2>
+          <h2 className="font-semibold text-foreground mb-3">Dars matni</h2>
           <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
             {lesson?.content}
           </p>
@@ -133,21 +146,21 @@ const Lesson = () => {
 
         {/* Complete button */}
         {isCompleted ? (
-          <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-glow-mint text-foreground">
+          <div className="flex items-center justify-center gap-2 h-[52px] rounded-[14px] bg-success/15 text-success">
             <CheckCircle size={18} />
-            <span className="font-bold text-sm">Tugatilgan ✓</span>
+            <span className="font-semibold text-sm">Bajarilgan ✓</span>
           </div>
         ) : (
           <button
             onClick={() => completeMutation.mutate()}
             disabled={completeMutation.isPending}
-            className="w-full py-3 rounded-xl gradient-warm text-primary-foreground font-bold text-sm shadow-soft disabled:opacity-50"
+            className="w-full h-[52px] rounded-[14px] gradient-warm text-primary-foreground font-semibold text-[15px] shadow-soft disabled:opacity-50 press-scale"
           >
             Tugatdim ✓
           </button>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
