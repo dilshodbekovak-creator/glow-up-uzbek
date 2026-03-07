@@ -140,6 +140,21 @@ const Tracker = () => {
           <ArrowLeft size={22} />
         </button>
         <h1 className="text-xl font-extrabold text-foreground">Hayz kalendari</h1>
+        <button
+          onClick={() => {
+            if ("Notification" in window) {
+              Notification.requestPermission().then((perm) => {
+                if (perm === "granted") toast.success("Bildirishnomalar yoqildi! 🔔");
+                else toast.error("Bildirishnomalar rad etildi");
+              });
+            } else {
+              toast.error("Brauzer bildirishnomalarni qo'llab-quvvatlamaydi");
+            }
+          }}
+          className="ml-auto w-9 h-9 rounded-full bg-muted flex items-center justify-center"
+        >
+          <Bell size={16} className="text-foreground" />
+        </button>
       </div>
 
       <div className="px-5">
