@@ -34,6 +34,14 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -50,13 +58,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        glow: {
-          coral: "hsl(var(--glow-coral))",
-          peach: "hsl(var(--glow-peach))",
-          rose: "hsl(var(--glow-rose))",
-          cream: "hsl(var(--glow-cream))",
-          lavender: "hsl(var(--glow-lavender))",
-          mint: "hsl(var(--glow-mint))",
+        porla: {
+          rose: "hsl(var(--porla-rose))",
+          blush: "hsl(var(--porla-blush))",
+          petal: "hsl(var(--porla-petal))",
+          plum: "hsl(var(--porla-plum))",
+          mauve: "hsl(var(--porla-mauve))",
+          deep: "hsl(var(--porla-deep))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -89,11 +97,16 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-8px)" },
         },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "float": "float 3s ease-in-out infinite",
+        "shimmer": "shimmer 1.5s ease-in-out infinite",
       },
     },
   },
