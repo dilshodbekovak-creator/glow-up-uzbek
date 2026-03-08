@@ -86,6 +86,27 @@ const Profile = () => {
           </div>
         </motion.div>
 
+        {/* Admin panel link */}
+        {isAdmin && (
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.12 }}
+            onClick={() => navigate("/admin")}
+            className="w-full bg-card rounded-2xl p-4 shadow-card flex items-center gap-3 press-scale-sm"
+            style={{ minHeight: 56 }}
+          >
+            <div className="w-10 h-10 rounded-[10px] bg-primary/10 flex items-center justify-center">
+              <Shield size={18} className="text-primary" />
+            </div>
+            <div className="text-left flex-1">
+              <h3 className="font-semibold text-sm text-foreground">Admin Panel</h3>
+              <p className="text-xs text-muted-foreground">Boshqaruv paneli</p>
+            </div>
+            <ChevronRight size={16} className="text-muted-foreground/50" />
+          </motion.button>
+        )}
+
         {/* Logout */}
         <motion.button
           initial={{ opacity: 0, y: 10 }}
