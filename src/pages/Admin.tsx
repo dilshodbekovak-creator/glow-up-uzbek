@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Crown, Video, Search, Check } from "lucide-react";
+import { ArrowLeft, Crown, Video, Search, Check, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,6 +12,8 @@ const Admin = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingLesson, setEditingLesson] = useState<string | null>(null);
   const [videoUrl, setVideoUrl] = useState("");
+  const [editingContent, setEditingContent] = useState<string | null>(null);
+  const [contentText, setContentText] = useState("");
 
   // Check admin role
   const { data: isAdmin, isLoading: checkingAdmin } = useQuery({
@@ -64,16 +66,26 @@ const Admin = () => {
 
   const updateVideoUrl = useMutation({
     mutationFn: async ({ lessonId, url }: { lessonId: string; url: string }) => {
-      const { error } = await supabase
-        .from("lessons")
-        .update({ video_url: url || null })
-        .eq("id", lessonId);
+      const { error } = await supabase.from("lessons").update({ video_url: url || null }).eq("id", lessonId);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-lessons"] });
       setEditingLesson(null);
       toast.success("Video URL yangilandi!");
+    },
+    onError: () => toast.error("Xatolik"),
+  });
+
+  const updateContent = useMutation({
+    mutationFn: async ({ lessonId, content }: { lessonId: string; content: string }) => {
+      const { error } = await supabase.from("lessons").update({ content }).eq("id", lessonId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-lessons"] });
+      setEditingContent(null);
+      toast.success("Dars matni yangilandi!");
     },
     onError: () => toast.error("Xatolik"),
   });
@@ -183,14 +195,53 @@ const Admin = () => {
                     </button>
                   </div>
                 ) : (
+                  <div className="mt-2 flex gap-3">
+                    <button
+                      onClick={() => {
+                        setEditingLesson(l.id);
+                        setVideoUrl(l.video_url || "");
+                      }}
+                      className="text-xs text-primary font-semibold"
+                    >
+                      {l.video_url ? "URL ni o'zgartirish" : "Video URL qo'shish"}
+                    </button>
+                  </div>
+                )}
+
+                {editingContent === l.id ? (
+                  <div className="mt-2 space-y-2">
+                    <textarea
+                      value={contentText}
+                      onChange={(e) => setContentText(e.target.value)}
+                      placeholder="Dars matni..."
+                      rows={6}
+                      className="w-full px-3 py-2 rounded-lg bg-muted text-sm text-foreground placeholder:text-muted-foreground focus:outline-none resize-y"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => updateContent.mutate({ lessonId: l.id, content: contentText })}
+                        className="h-8 px-4 rounded-lg gradient-warm text-xs font-semibold text-primary-foreground press-scale"
+                      >
+                        Saqlash
+                      </button>
+                      <button
+                        onClick={() => setEditingContent(null)}
+                        className="h-8 px-4 rounded-lg bg-muted text-xs font-semibold text-muted-foreground"
+                      >
+                        Bekor
+                      </button>
+                    </div>
+                  </div>
+                ) : (
                   <button
                     onClick={() => {
-                      setEditingLesson(l.id);
-                      setVideoUrl(l.video_url || "");
+                      setEditingContent(l.id);
+                      setContentText(l.content || "");
                     }}
-                    className="mt-2 text-xs text-primary font-semibold"
+                    className="mt-1 text-xs text-primary font-semibold flex items-center gap-1"
                   >
-                    {l.video_url ? "URL ni o'zgartirish" : "Video URL qo'shish"}
+                    <FileText size={12} />
+                    {l.content ? "Matnni tahrirlash" : "Matn qo'shish"}
                   </button>
                 )}
               </div>
