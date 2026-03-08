@@ -59,7 +59,7 @@ const ModuleDetail = () => {
   const estimatedMin = totalCount * 12;
 
   const handleBuy = () => {
-    const msg = encodeURIComponent(`Salom! Men "${module?.title}" kursiga yozilmoqchiman.`);
+    const msg = encodeURIComponent("Porla Premium Sotib olmoqchiman");
     window.open(`https://t.me/porlapayment_bot?text=${msg}`, "_blank");
   };
 

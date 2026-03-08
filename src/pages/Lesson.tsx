@@ -74,8 +74,7 @@ const Lesson = () => {
   });
 
   const handleBuy = () => {
-    const moduleTitle = (lesson as any)?.modules?.title ?? "modul";
-    const msg = encodeURIComponent(`Salom! Men "${moduleTitle}" kursiga yozilmoqchiman.`);
+    const msg = encodeURIComponent("Porla Premium Sotib olmoqchiman");
     window.open(`https://t.me/porlapayment_bot?text=${msg}`, "_blank");
   };
 
