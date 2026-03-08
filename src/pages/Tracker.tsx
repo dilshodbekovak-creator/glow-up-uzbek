@@ -292,7 +292,7 @@ const Tracker = () => {
                   onClick={() => handleDayTap(day)}
                   className={`aspect-square rounded-xl flex items-center justify-center text-sm font-semibold transition-all
                     ${inPeriod ? "bg-destructive text-destructive-foreground shadow-soft" : ""}
-                    ${predicted && !inPeriod ? "bg-porla-blush text-foreground" : ""}
+                    ${predicted && !inPeriod ? "bg-porla-peach text-foreground" : ""}
                     ${isStart ? "ring-2 ring-primary" : ""}
                     ${today && !inPeriod && !predicted ? "ring-2 ring-primary bg-transparent" : ""}
                     ${!inPeriod && !predicted && !today ? "text-foreground hover:bg-muted" : ""}
