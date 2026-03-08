@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 
 const tabs = [
   { path: "/", icon: Home, label: "Bosh sahifa" },
-  { path: "/modules", icon: BookOpen, label: "Darslar" },
-  { path: "/tracker", icon: CalendarHeart, label: "Kalendar" },
+  { path: "/modules", icon: BookOpen, label: "Kurslar" },
+  { path: "/tracker", icon: CalendarHeart, label: "Sikl" },
   { path: "/profile", icon: User, label: "Profil" },
 ];
 
@@ -36,11 +36,7 @@ const BottomNav = () => {
                 size={22}
                 className={`transition-colors duration-200 ${isActive ? "text-primary" : "text-muted-foreground"}`}
               />
-              <span
-                className={`text-[10px] font-semibold transition-colors duration-200 ${
-                  isActive ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
+              <span className={`text-[10px] font-semibold transition-colors duration-200 ${isActive ? "text-primary" : "text-muted-foreground"}`}>
                 {tab.label}
               </span>
             </button>
