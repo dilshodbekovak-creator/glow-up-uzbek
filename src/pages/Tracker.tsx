@@ -240,7 +240,7 @@ const Tracker = () => {
               <span className="text-muted-foreground">Hayz</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-porla-blush" />
+              <div className="w-3 h-3 rounded-full bg-porla-peach" />
               <span className="text-muted-foreground">Taxminiy</span>
             </div>
             <div className="flex items-center gap-1.5">
