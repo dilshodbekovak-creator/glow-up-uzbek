@@ -192,32 +192,6 @@ const Tracker = () => {
           </motion.div>
         </div>
 
-        {/* Cycle length selector */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="bg-card rounded-2xl p-4 mb-4 shadow-card"
-        >
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-foreground">Sikl uzunligi</p>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setCycleLength(Math.max(28, cycleLength - 1))}
-                className="w-11 h-11 rounded-full border-[1.5px] border-primary flex items-center justify-center press-scale"
-              >
-                <Minus size={16} className="text-primary" />
-              </button>
-              <span className="text-lg font-bold text-primary w-8 text-center">{cycleLength}</span>
-              <button
-                onClick={() => setCycleLength(Math.min(35, cycleLength + 1))}
-                className="w-11 h-11 rounded-full border-[1.5px] border-primary flex items-center justify-center press-scale"
-              >
-                <Plus size={16} className="text-primary" />
-              </button>
-            </div>
-          </div>
-          <p className="text-[10px] text-muted-foreground mt-1">28–35 kun orasida</p>
-        </motion.div>
 
         {/* Tap instruction */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-3 text-center">
