@@ -66,16 +66,26 @@ const Admin = () => {
 
   const updateVideoUrl = useMutation({
     mutationFn: async ({ lessonId, url }: { lessonId: string; url: string }) => {
-      const { error } = await supabase
-        .from("lessons")
-        .update({ video_url: url || null })
-        .eq("id", lessonId);
+      const { error } = await supabase.from("lessons").update({ video_url: url || null }).eq("id", lessonId);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-lessons"] });
       setEditingLesson(null);
       toast.success("Video URL yangilandi!");
+    },
+    onError: () => toast.error("Xatolik"),
+  });
+
+  const updateContent = useMutation({
+    mutationFn: async ({ lessonId, content }: { lessonId: string; content: string }) => {
+      const { error } = await supabase.from("lessons").update({ content }).eq("id", lessonId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-lessons"] });
+      setEditingContent(null);
+      toast.success("Dars matni yangilandi!");
     },
     onError: () => toast.error("Xatolik"),
   });

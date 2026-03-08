@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, LogOut, Crown, ChevronRight, BookCheck, Mail, User as UserIcon } from "lucide-react";
+import { ArrowLeft, LogOut, Crown, ChevronRight, BookCheck, Mail, User as UserIcon, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
