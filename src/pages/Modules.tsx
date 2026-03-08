@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Play, Lock, Shield, Clock, Star, User as UserIcon, ChevronRight } from "lucide-react";
+import { ArrowLeft, Play, Lock, Shield, ChevronRight } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -95,18 +95,6 @@ const ModuleDetail = () => {
           <p className="text-[10px] text-muted-foreground mt-1.5">{Math.round(progress)}% tugallangan</p>
         </motion.div>
 
-        {/* Info row */}
-        <div className="flex items-center gap-4 mb-4 px-1">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <UserIcon size={13} /><span>Mutaxassis</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Clock size={13} /><span>{estimatedMin} daq</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Star size={13} className="text-warning" /><span>4.8 (124)</span>
-          </div>
-        </div>
 
         {/* Buy button */}
         {!profile?.is_premium && (
@@ -163,10 +151,7 @@ const ModuleDetail = () => {
                     <span className="text-[10px] text-muted-foreground">Premium dars</span>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-muted-foreground">12 daq</span>
-                  <ChevronRight size={14} className="text-muted-foreground/50" />
-                </div>
+                <ChevronRight size={14} className="text-muted-foreground/50" />
               </motion.div>
             );
           })}
