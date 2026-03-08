@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Play, Lock, Shield, Clock, Star, User as UserIcon, ChevronRight } from "lucide-react";
+import { ArrowLeft, Play, Lock, Shield, ChevronRight } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
