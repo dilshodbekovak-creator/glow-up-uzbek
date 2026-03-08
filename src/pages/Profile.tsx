@@ -17,6 +17,18 @@ const Profile = () => {
     },
   });
 
+  const { data: isAdmin } = useQuery({
+    queryKey: ["is-admin-profile"],
+    queryFn: async () => {
+      const { data } = await supabase.rpc("has_role", {
+        _user_id: user?.id ?? "",
+        _role: "admin",
+      });
+      return data === true;
+    },
+    enabled: !!user,
+  });
+
   const handleLogout = async () => {
     await signOut();
     navigate("/auth");
