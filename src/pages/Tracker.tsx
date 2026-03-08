@@ -170,7 +170,7 @@ const Tracker = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-porla-petal rounded-2xl p-4 text-center shadow-card"
+            className="bg-porla-peach rounded-2xl p-4 text-center shadow-card"
           >
             <p className="text-[10px] text-muted-foreground font-medium mb-1">Keyingi hayzgacha</p>
             <p className="text-2xl font-bold text-primary">
@@ -240,7 +240,7 @@ const Tracker = () => {
               <span className="text-muted-foreground">Hayz</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-porla-blush" />
+              <div className="w-3 h-3 rounded-full bg-porla-peach" />
               <span className="text-muted-foreground">Taxminiy</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -292,7 +292,7 @@ const Tracker = () => {
                   onClick={() => handleDayTap(day)}
                   className={`aspect-square rounded-xl flex items-center justify-center text-sm font-semibold transition-all
                     ${inPeriod ? "bg-destructive text-destructive-foreground shadow-soft" : ""}
-                    ${predicted && !inPeriod ? "bg-porla-blush text-foreground" : ""}
+                    ${predicted && !inPeriod ? "bg-porla-peach text-foreground" : ""}
                     ${isStart ? "ring-2 ring-primary" : ""}
                     ${today && !inPeriod && !predicted ? "ring-2 ring-primary bg-transparent" : ""}
                     ${!inPeriod && !predicted && !today ? "text-foreground hover:bg-muted" : ""}

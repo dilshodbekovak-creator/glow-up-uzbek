@@ -86,7 +86,7 @@ const ModuleDetail = () => {
         {/* Progress */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card rounded-2xl p-4 shadow-card mb-4">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-semibold text-foreground">Taraqqiyot</span>
+            <span className="text-sm font-semibold text-foreground">Jarayon</span>
             <span className="text-xs text-muted-foreground">{completedCount}/{totalCount} dars bajarildi</span>
           </div>
           <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
