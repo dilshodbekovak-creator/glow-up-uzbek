@@ -151,10 +151,7 @@ const ModuleDetail = () => {
                     <span className="text-[10px] text-muted-foreground">Premium dars</span>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-muted-foreground">12 daq</span>
-                  <ChevronRight size={14} className="text-muted-foreground/50" />
-                </div>
+                <ChevronRight size={14} className="text-muted-foreground/50" />
               </motion.div>
             );
           })}
