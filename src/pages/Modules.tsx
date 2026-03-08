@@ -95,18 +95,6 @@ const ModuleDetail = () => {
           <p className="text-[10px] text-muted-foreground mt-1.5">{Math.round(progress)}% tugallangan</p>
         </motion.div>
 
-        {/* Info row */}
-        <div className="flex items-center gap-4 mb-4 px-1">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <UserIcon size={13} /><span>Mutaxassis</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Clock size={13} /><span>{estimatedMin} daq</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Star size={13} className="text-warning" /><span>4.8 (124)</span>
-          </div>
-        </div>
 
         {/* Buy button */}
         {!profile?.is_premium && (
