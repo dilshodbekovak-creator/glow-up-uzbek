@@ -5,12 +5,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import Landing from "./pages/Landing";
 import Index from "./pages/Index";
 import ModulesList from "./pages/ModulesList";
 import ModuleDetail from "./pages/Modules";
 import Lesson from "./pages/Lesson";
 import Tracker from "./pages/Tracker";
 import Profile from "./pages/Profile";
+import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
@@ -27,7 +29,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       </div>
     </div>
   );
-  if (!user) return <Navigate to="/auth" replace />;
+  if (!user) return <Navigate to="/landing" replace />;
   return <>{children}</>;
 };
 
@@ -38,10 +40,18 @@ const AuthRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (user) return <Navigate to="/" replace />;
+  return <>{children}</>;
+};
+
 const AppRoutes = () => (
   <div className="max-w-lg mx-auto relative">
     <AnimatePresence mode="wait">
       <Routes>
+        <Route path="/landing" element={<PublicRoute><Landing /></PublicRoute>} />
         <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
         <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
         <Route path="/modules" element={<ProtectedRoute><ModulesList /></ProtectedRoute>} />
@@ -49,6 +59,7 @@ const AppRoutes = () => (
         <Route path="/lesson/:lessonId" element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
         <Route path="/tracker" element={<ProtectedRoute><Tracker /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

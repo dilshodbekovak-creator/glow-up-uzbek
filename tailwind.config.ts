@@ -59,12 +59,10 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         porla: {
-          rose: "hsl(var(--porla-rose))",
-          blush: "hsl(var(--porla-blush))",
-          petal: "hsl(var(--porla-petal))",
-          plum: "hsl(var(--porla-plum))",
-          mauve: "hsl(var(--porla-mauve))",
-          deep: "hsl(var(--porla-deep))",
+          pink: "hsl(var(--porla-pink))",
+          peach: "hsl(var(--porla-peach))",
+          accent: "hsl(var(--porla-accent))",
+          bg: "hsl(var(--porla-bg))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
