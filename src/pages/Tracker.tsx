@@ -170,7 +170,7 @@ const Tracker = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-porla-petal rounded-2xl p-4 text-center shadow-card"
+            className="bg-porla-peach rounded-2xl p-4 text-center shadow-card"
           >
             <p className="text-[10px] text-muted-foreground font-medium mb-1">Keyingi hayzgacha</p>
             <p className="text-2xl font-bold text-primary">
