@@ -12,6 +12,8 @@ const Admin = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingLesson, setEditingLesson] = useState<string | null>(null);
   const [videoUrl, setVideoUrl] = useState("");
+  const [editingContent, setEditingContent] = useState<string | null>(null);
+  const [contentText, setContentText] = useState("");
 
   // Check admin role
   const { data: isAdmin, isLoading: checkingAdmin } = useQuery({
