@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -5,17 +6,27 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
-import Landing from "./pages/Landing";
-import Index from "./pages/Index";
-import ModulesList from "./pages/ModulesList";
-import ModuleDetail from "./pages/Modules";
-import Lesson from "./pages/Lesson";
-import Tracker from "./pages/Tracker";
-import Profile from "./pages/Profile";
-import Admin from "./pages/Admin";
-import Auth from "./pages/Auth";
-import NotFound from "./pages/NotFound";
-import BottomNav from "./components/BottomNav";
+
+const Landing = lazy(() => import("./pages/Landing"));
+const Index = lazy(() => import("./pages/Index"));
+const ModulesList = lazy(() => import("./pages/ModulesList"));
+const ModuleDetail = lazy(() => import("./pages/Modules"));
+const Lesson = lazy(() => import("./pages/Lesson"));
+const Tracker = lazy(() => import("./pages/Tracker"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Admin = lazy(() => import("./pages/Admin"));
+const Auth = lazy(() => import("./pages/Auth"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const BottomNav = lazy(() => import("./components/BottomNav"));
+
+const LazyFallback = () => (
+  <div className="min-h-screen flex items-center justify-center gradient-soft">
+    <div className="text-center">
+      <span className="text-3xl block mb-2">✨</span>
+      <span className="text-sm font-semibold text-muted-foreground">Porla</span>
+    </div>
+  </div>
+);
 
 const queryClient = new QueryClient();
 
