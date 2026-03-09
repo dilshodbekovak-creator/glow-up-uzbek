@@ -60,21 +60,23 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 
 const AppRoutes = () => (
   <div className="max-w-lg mx-auto relative">
-    <AnimatePresence mode="wait">
-      <Routes>
-        <Route path="/landing" element={<PublicRoute><Landing /></PublicRoute>} />
-        <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
-        <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-        <Route path="/modules" element={<ProtectedRoute><ModulesList /></ProtectedRoute>} />
-        <Route path="/modules/:moduleId" element={<ProtectedRoute><ModuleDetail /></ProtectedRoute>} />
-        <Route path="/lesson/:lessonId" element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
-        <Route path="/tracker" element={<ProtectedRoute><Tracker /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AnimatePresence>
-    <ProtectedBottomNav />
+    <Suspense fallback={<LazyFallback />}>
+      <AnimatePresence mode="wait">
+        <Routes>
+          <Route path="/landing" element={<PublicRoute><Landing /></PublicRoute>} />
+          <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
+          <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+          <Route path="/modules" element={<ProtectedRoute><ModulesList /></ProtectedRoute>} />
+          <Route path="/modules/:moduleId" element={<ProtectedRoute><ModuleDetail /></ProtectedRoute>} />
+          <Route path="/lesson/:lessonId" element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
+          <Route path="/tracker" element={<ProtectedRoute><Tracker /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AnimatePresence>
+      <ProtectedBottomNav />
+    </Suspense>
   </div>
 );
 
