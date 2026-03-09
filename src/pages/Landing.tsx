@@ -37,9 +37,6 @@ const Landing = () => {
           <p className="text-sm text-primary-foreground/85 mt-3 leading-relaxed">
             Ayollar salomatligini tushunishga yordam beruvchi platforma.
           </p>
-          <p className="text-xs text-primary-foreground/70 mt-2 leading-relaxed">
-            Ayollar reproduktiv tizimi, hayz sikli va gormonlar haqida ishonchli bilimlarni o'rganing va tanangizni yaxshiroq tushuning.
-          </p>
           <div className="flex gap-3 justify-center mt-6">
             <button
               onClick={() => navigate("/auth")}
