@@ -1,0 +1,2 @@
+ALTER TABLE public.period_tracking ADD COLUMN IF NOT EXISTS cycle_length integer NOT NULL DEFAULT 28;
+ALTER TABLE public.period_tracking ADD COLUMN IF NOT EXISTS period_length integer NOT NULL DEFAULT 5;
