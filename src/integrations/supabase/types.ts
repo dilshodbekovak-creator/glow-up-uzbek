@@ -111,8 +111,10 @@ export type Database = {
       period_tracking: {
         Row: {
           created_at: string
+          cycle_length: number
           end_date: string | null
           id: string
+          period_length: number
           predicted_next_date: string | null
           start_date: string
           updated_at: string
@@ -120,8 +122,10 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          cycle_length?: number
           end_date?: string | null
           id?: string
+          period_length?: number
           predicted_next_date?: string | null
           start_date: string
           updated_at?: string
@@ -129,8 +133,10 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          cycle_length?: number
           end_date?: string | null
           id?: string
+          period_length?: number
           predicted_next_date?: string | null
           start_date?: string
           updated_at?: string
