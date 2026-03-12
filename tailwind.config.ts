@@ -64,6 +64,13 @@ export default {
           accent: "hsl(var(--porla-accent))",
           bg: "hsl(var(--porla-bg))",
         },
+        cycle: {
+          menstruation: "hsl(var(--cycle-menstruation))",
+          follicular: "hsl(var(--cycle-follicular))",
+          ovulation: "hsl(var(--cycle-ovulation))",
+          luteal: "hsl(var(--cycle-luteal))",
+          predicted: "hsl(var(--cycle-predicted))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

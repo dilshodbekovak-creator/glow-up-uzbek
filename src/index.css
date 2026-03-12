@@ -56,6 +56,13 @@
     --porla-peach: 18 100% 90%;
     --porla-accent: 0 100% 78%;
     --porla-bg: 10 100% 98%;
+
+    /* Cycle phase colors */
+    --cycle-menstruation: 0 72% 58%;
+    --cycle-follicular: 36 90% 65%;
+    --cycle-ovulation: 145 55% 48%;
+    --cycle-luteal: 260 55% 62%;
+    --cycle-predicted: 346 80% 88%;
     --gradient-warm: linear-gradient(135deg, hsl(346, 80%, 75%), hsl(346, 60%, 60%));
     --gradient-soft: linear-gradient(180deg, hsl(10, 100%, 98%), hsl(346, 80%, 96%));
     --gradient-peach: linear-gradient(135deg, hsl(346, 80%, 75%), hsl(18, 100%, 85%));
