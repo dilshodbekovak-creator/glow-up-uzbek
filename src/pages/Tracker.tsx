@@ -121,6 +121,14 @@ const Tracker = () => {
           day={selectedDay}
           info={selectedInfo}
           onClose={() => { setSelectedDay(null); setSelectedInfo(null); }}
+          onSaveActual={(day) => {
+            const lastPeriod = periods[0];
+            const periodLength = lastPeriod?.period_length || 5;
+            const cycleLength = lastPeriod?.cycle_length || 28;
+            saveMutation.mutate({ startDate: day, periodLength, cycleLength });
+            setSelectedDay(null);
+            setSelectedInfo(null);
+          }}
         />
 
         {/* Saved periods */}
