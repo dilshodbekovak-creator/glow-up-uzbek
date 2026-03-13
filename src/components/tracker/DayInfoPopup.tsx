@@ -1,12 +1,14 @@
 import { format } from "date-fns";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import type { PhaseInfo } from "./cycleUtils";
 
 interface DayInfoPopupProps {
   day: Date | null;
   info: PhaseInfo | null;
   onClose: () => void;
+  onSaveActual?: (day: Date) => void;
 }
 
 const phaseEmojis: Record<string, string> = {
@@ -17,7 +19,7 @@ const phaseEmojis: Record<string, string> = {
   predicted: "🔮",
 };
 
-const DayInfoPopup = ({ day, info, onClose }: DayInfoPopupProps) => (
+const DayInfoPopup = ({ day, info, onClose, onSaveActual }: DayInfoPopupProps) => (
   <AnimatePresence>
     {day && info && (
       <motion.div
@@ -46,10 +48,20 @@ const DayInfoPopup = ({ day, info, onClose }: DayInfoPopupProps) => (
         <p className="text-xs text-muted-foreground leading-relaxed">{info.description}</p>
 
         {info.isPredicted && (
-          <div className="mt-3 bg-cycle-predicted/30 rounded-xl px-3 py-2">
-            <p className="text-[10px] text-muted-foreground font-medium">
-              ⚠️ Bu kun faqat taxminiy hisob asosida ko'rsatilgan
-            </p>
+          <div className="mt-3 space-y-2">
+            <div className="bg-cycle-predicted/30 rounded-xl px-3 py-2">
+              <p className="text-[10px] text-muted-foreground font-medium">
+                ⚠️ Bu kun faqat taxminiy hisob asosida ko'rsatilgan
+              </p>
+            </div>
+            {onSaveActual && (
+              <Button
+                onClick={() => onSaveActual(day)}
+                className="w-full h-10 rounded-xl gradient-warm text-primary-foreground font-semibold text-xs"
+              >
+                ✅ Aniq hayz boshlandi deb belgilash
+              </Button>
+            )}
           </div>
         )}
       </motion.div>
