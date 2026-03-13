@@ -100,20 +100,6 @@ export function getDayPhase(
         }
       }
 
-      // For predicted cycles further out, generate additional predictions
-      for (let i = 1; i <= 6; i++) {
-        const futureStart = addDays(predStart, cycleLength * i);
-        const futureEnd = addDays(futureStart, periodLength - 1);
-        if (isWithinInterval(target, { start: futureStart, end: futureEnd })) {
-          if (!isBefore(target, today)) {
-            return {
-              phase: "predicted",
-              ...PHASE_INFO.predicted,
-              isPredicted: true,
-            };
-          }
-        }
-      }
     }
   }
 
